@@ -670,7 +670,10 @@ public class SimpleDateFormat extends DateFormat {
                 break;
             case AM_PM_FIELD:
                 dateFormatField = Field.AM_PM;
-                buffer.append(formatData.ampms[calendar.get(Calendar.AM_PM)]);
+                String s = formatData.ampms[calendar.get(Calendar.AM_PM)];
+                int i = calendar.get(Calendar.HOUR_OF_DAY);
+                String s1 = getAMPMString(i, mLocale, s);
+                buffer.append(s1);
                 break;
             case HOUR1_FIELD: // h
                 dateFormatField = Field.HOUR1;
@@ -710,6 +713,72 @@ public class SimpleDateFormat extends DateFormat {
         }
     }
 
+    private Locale mLocale;
+    
+    public static String getAMPMString(int i, Locale locale, String s) {
+        if (locale == null) {
+            locale = Locale.getDefault();
+        }
+        if (locale.toString().startsWith("zh")) {
+            s = getChineseAMPMString(i);
+        } 
+        return s;
+    }
+
+    public static String getChineseAMPMString(int i) {
+        String s = "";     
+        switch (i) { 
+            case 0:
+                s = "\u5348\u591c";
+                break;
+            case 1:
+            case 2:
+            case 3:
+				s="\u51cc\u6668";
+				break;
+            case 4:
+            case 5:
+                s="\u62c2\u6653";
+				break;
+            case 6:
+				s="\u6e05\u6668";
+				break;
+            case 7:
+				s="\u65e9\u6668";
+				break;
+            case 8:
+            case 9:
+            case 10:
+				s = "\u4E0A\u5348";
+                break;
+            case 11:
+            case 12:
+                s = "\u4E2D\u5348";
+                break;
+            case 13:
+            case 14:
+            case 15:
+            case 16:
+			    s = "\u4E0B\u5348";
+                break;
+            case 17:
+				s = "\u508D\u665A";
+                break;
+            case 18:
+            case 19:
+            case 20:
+            case 21:
+            case 22:
+				s = "\u665A\u4E0A";
+                break;
+            case 23:
+				 s = "\u5348\u591c";
+                break;
+            default:
+                break;
+        }
+        return s;
+    }
     private void appendDayOfWeek(StringBuffer buffer, int count, String[] longs, String[] shorts) {
         boolean isLong = (count > 3);
         String[] days = isLong ? longs : shorts;
