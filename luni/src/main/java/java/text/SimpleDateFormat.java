@@ -371,6 +371,7 @@ public class SimpleDateFormat extends DateFormat {
     }
 
     private SimpleDateFormat(Locale locale) {
+        mLocale = locale;
         numberFormat = NumberFormat.getInstance(locale);
         numberFormat.setParseIntegerOnly(true);
         numberFormat.setGroupingUsed(false);
